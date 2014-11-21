@@ -76,9 +76,7 @@ public class agent {
 			System.out.println("Parsing Exception - Please check the data format in input.txt");
 			e.printStackTrace();
 		}
-		
-		
-		
+			
 	}
 
 }
