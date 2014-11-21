@@ -1,8 +1,10 @@
 package com;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
 
 public class Query{
 	
@@ -10,7 +12,7 @@ public class Query{
 	String name=null;
 
 	//variables present in goal premise.
-	HashMap<String,String> variable = new HashMap<String, String>();
+	Map<String,String> variable = new LinkedHashMap<String, String>();
 	
 	//List of premises which are supposed to be true for the goal to be true.
 	List<Query> premises = new ArrayList<Query>();

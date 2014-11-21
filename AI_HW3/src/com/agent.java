@@ -1,11 +1,12 @@
 package com;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
 public class agent {
 
@@ -39,10 +40,7 @@ public class agent {
 						{
 							Query input = bc.parseQuery(line);
 							
-							if(bc.KB.containsKey(input.name))
-								bc.KB.get(input.name).add(input);
-							else
-								bc.KB.put(input.name,(List<Query>) input);
+							bc.insertIntoKB(input);
 							
 							line= reader.readLine();
 							
@@ -53,11 +51,29 @@ public class agent {
 				
 			}
 			
+			reader.close();
+			
+			//invoke backward chaining
+			bc.startBackwardChain(bc.question);
+			
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File("output.txt")));
+			if(bc.question.conclusion)
+			{
+				writer.write("TRUE");
+				System.out.println("TRUE");
+			}
+			else 
+			{
+				writer.write("FALSE");
+				System.out.println("FALSE");
+			}
+			writer.close();
+			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Please check the path specified.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Parsing Exception - Please check the data format in input.txt");
 			e.printStackTrace();
 		}
 		
