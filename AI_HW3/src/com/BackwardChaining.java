@@ -29,17 +29,16 @@ public class BackwardChaining {
 			Query eachPossbileGoal = possibleGoals.get(i);
 			
 			if(unify(eachPossbileGoal,goal))
-			{
-				standardizeVariables(eachPossbileGoal, goal);
+			{	
+				if(eachPossbileGoal.variable.containsKey("x") && eachPossbileGoal.variable.get("x")!=null)
+					standardizeVariables(eachPossbileGoal, goal);
 				
 				if(!FOL_BC_AND(eachPossbileGoal,goal))
-				{
 					valid=false;
-					break;
-				}
 				else
 					valid=true;
-					
+				
+				break;
 				
 			}
 		}	
@@ -60,7 +59,11 @@ public class BackwardChaining {
 		
 		if(premise.premises.size()==0 && !premise.variable.containsKey("x"))
 		{
-			premise.conclusion = checkForGoal(premise, goal);
+			if(goal.variable.get("x")==null || goal.variable.get("x").equals("") )
+				premise.conclusion = true;
+			else
+				premise.conclusion=	checkForGoal(premise, goal);
+			
 			return premise.conclusion;
 		}
 		
@@ -93,12 +96,31 @@ public class BackwardChaining {
 		Iterator<String> itr2 = gSet.iterator();
 		while(itr1.hasNext() && itr2.hasNext())
 		{
-			String t1 = itr1.next();
-			String t2 = itr2.next();
+			String pgKey = itr1.next();
+			String goalKey = itr2.next();
+			String pgValue = possibleGoal.variable.get(pgKey);
+			String goalValue = goal.variable.get(goalKey);
 			
-			if(t1.equals("x") || t2.equals("x") || t2.equals(t1))
+			
+			if((goalKey.equals("x") && !pgKey.equals("x")))
+			{
+				if((goalValue==null || goalValue.equals("")) || goalValue.equals(pgValue))
+					continue;
+				else
+					return false;
+			}		
+			else if(!goalKey.equals("x") && !pgKey.equals("x"))
+			{
+				if(goalValue.equals(pgValue))
+					continue;
+				else 
+					return false;
+			}
+			else if(pgKey.equals("x"))
 				continue;
-			else return false;
+			else
+				return false;
+			
 		}
 		
 		return true;
