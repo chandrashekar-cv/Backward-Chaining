@@ -36,10 +36,10 @@ public class BackwardChaining {
 				if(!FOL_BC_AND(eachPossbileGoal,goal))
 					valid=false;
 				else
+				{
 					valid=true;
-				
-				break;
-				
+					break;
+				}
 			}
 		}	
 		
@@ -116,7 +116,19 @@ public class BackwardChaining {
 				else 
 					return false;
 			}
-			else if(pgKey.equals("x"))
+			else if(goalKey.equals("x") && pgKey.equals("x"))
+			{
+				if(goalValue==null || pgValue==null || goalValue.equals("") || pgValue.equals(""))
+					continue;
+				else
+				{
+					if(goalValue.equals(pgValue))
+						continue;
+					else
+						return false;
+				}
+			}
+			else if(!goalKey.equals("x") && pgKey.equals("x"))
 				continue;
 			else
 				return false;
