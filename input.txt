@@ -1,0 +1,5 @@
+Journey(Tom)
+3
+hasBike(Tom)&Travelling(Tom,Himalayas)=>Journey(Tom)
+Travelling(Tom,Himalayas)
+hasBike(Tom)
